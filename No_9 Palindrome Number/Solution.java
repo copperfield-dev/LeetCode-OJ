@@ -8,7 +8,6 @@ public class Solution {
         while ((x / divisor) >= 10)
             divisor *= 10;
 
-        System.out.println(divisor);
         while (x != 0) {
             int digitLast = x % 10;
             int digitFirst = x / divisor;
