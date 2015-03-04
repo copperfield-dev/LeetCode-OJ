@@ -8,17 +8,17 @@
  * }
  */
 public class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> answer = new ArrayList<Integer>();
         LinkedList<TreeNode> stack = new LinkedList<TreeNode>();
         while (root != null || !stack.isEmpty()) {
             if (root != null) {
+                answer.add(root.val);
                 stack.push(root);
                 root = root.left;
             }
             else {
                 root = stack.pop();
-                answer.add(root.val);
                 root = root.right;
             }
         }
