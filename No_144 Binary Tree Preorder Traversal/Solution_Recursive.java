@@ -8,7 +8,7 @@
  * }
  */
 public class Solution {
-    public List<Integer> inorderTraversal(TreeNode root) {
+    public List<Integer> preorderTraversal(TreeNode root) {
         List<Integer> answer = new ArrayList<Integer>();
         traversal(root, answer);
         return answer;
@@ -16,8 +16,8 @@ public class Solution {
 
     private void traversal(TreeNode tree, List<Integer> answer) {
         if (tree != null) {
-            traversal(tree.left, answer);
             answer.add(tree.val);
+            traversal(tree.left, answer);
             traversal(tree.right, answer);
         }
     }
