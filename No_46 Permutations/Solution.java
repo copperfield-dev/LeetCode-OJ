@@ -10,7 +10,7 @@ public class Solution {
     }
 
     public void backtrack(int[] num, int index) {
-        if (index >= num.length) {
+        if (index == num.length) {
             List<Integer> path = new ArrayList<Integer>();
             for (int j = 0; j < num.length; j++) 
                 path.add(num[j]);
