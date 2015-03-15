@@ -11,11 +11,13 @@ public class Solution {
 
     public void backtrack(int index, int target, int sum, 
         List<Integer> subAnswer, int[] c) {
+        /* 找到答案 */
         if (sum == target) {
             answerSet.add(new ArrayList<Integer>(subAnswer));
             return;
         }
 
+        /* 一次不成功的回溯 */
         if (sum > target || index > target) {
             c = construct_candidates(c);
             return;
@@ -33,9 +35,10 @@ public class Solution {
         }
     }
 
+    /* 删除掉一个失去意义的元素 */
     public int[] construct_candidates(int[] c) {
         int[] temp = new int[c.length - 1];
-        System.arraycopy(c, 0, temp, 0, c.length - 1);
+        System.arraycopy(c, 1, temp, 0, c.length - 1);
         return temp;
     }
 }
