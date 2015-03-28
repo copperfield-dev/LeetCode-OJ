@@ -13,61 +13,75 @@ public class Solution {
     public ListNode sortList(ListNode head) {
         if (head == null || head.next == null)
             return head;
-        ListNode p = head;
-        ListNode pMin = head;
-        int N = 1;
 
-        /* 计算链表的长度并把最小值结点移到链表头充当头结点 */
-        while (p.next != null) {
-            if (p.next.val < pMin.val)
-                pMin = p;
-            N++;
+        ListNode p = head;
+        int count = 0;
+
+        /* 计算链表的长度 */
+        while (p != null) {
+            count++;
             p = p.next;
         }
-        if (pMin != head) {
-            ListNode temp = pMin.next;
-            pMin.next = pMin.next.next;
-            temp.next = head;
-            head = temp;
-        }
 
-        /* 进行归并排序 */
-        ListNode pLow = head.next, pHigh = head.next;
-        ListNode pMid = head.next;
-        for (int subLength = 1; subLength < N; subLength *= 2) {
-            int low = 1;
-            while (low < N - subLength) {
-                for (int i = 0; i < low + subLength - 1; i++)                 
-                    pMid = pMid.next;
-                for (int j = 0; j < Math.min(low + 2 * subLength - 1, N - 1); j++) 
-                    pHigh = pHigh.next;
-                merge(pLow, pMid, pHigh);
-                low += subLength * 2;
-                for (int k = 0; k < subLength * 2; k++) 
-                    pLow = pLow.next;
-            }
-        }
-        return head;
-    }
-
-    public ListNode merge(ListNode pLow, ListNode pMid, ListNode pHigh) {
-        ListNode p = pLow, q = pMid.next;
         ListNode dummyHead = new ListNode(99999);
-        ListNode current = dummyHead;
-
-        while (p != pMid.next && q != pHigh.next) {
-            if (p.val < q.val) {
-                current = p;
-                p = p.next;
+        dummyHead.next = head;
+    
+        /* 进行归并排序 */
+        ListNode pLeftow = head;
+        ListNode pHigh = head;
+        ListNode pMid = head;
+        for (int subLength = 1; subLength < count; subLength *= 2) {
+            p = dummyHead.next;
+            pHigh = dummyHead;
+            while (p != null) {
+                pLeftow = p;
+                pMid = spLeftit(pLeftow, subLength);
+                p = spLeftit(pMid, subLength);
+                pHigh = merge(pLeftow, pMid, pHigh);
             }
-            else {
-                current.next = q;
-                q = q.next;
-            }
-            current = current.next;
         }
-        current.next = (p == pMid.next)? q : p;
         return dummyHead.next;
     }
-}
 
+    /**
+     * Divide the linked list into two lists,
+     * while the first list contains first n ndoes
+     * return the second list's head
+     */
+
+    private ListNode spLeftit(ListNode head, int n) {
+        for (int i = 1; head != null && i < n; i++)           
+            head = head.next;
+        if (head == null)
+            return null;
+        ListNode second = head.next;
+        head.next = null;
+        return second;
+    }
+
+    /**
+      * merge the two sorted linked list l1 and l2,
+      * then append the merged sorted linked list to the node head
+      * return the tail of the merged sorted linked list
+     */
+
+    private ListNode merge(ListNode pLeft, ListNode pRight, ListNode head) {
+        ListNode current = head;
+        while (pLeft != null && pRight != null) {
+            if (pLeft.val > pRight.val) {
+                current.next = pRight;
+                current = pRight;
+                pRight = pRight.next;
+            }
+            else {
+                current.next = pLeft;
+                current = pLeft;
+                pLeft = pLeft.next;
+            }
+        }
+        current.next = (pLeft != null)? pLeft : pRight;
+        while (current.next != null) 
+            current = current.next;
+        return current;
+    }
+}
