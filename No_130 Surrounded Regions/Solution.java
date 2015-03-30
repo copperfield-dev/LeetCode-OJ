@@ -1,0 +1,61 @@
+public class Solution {
+    public void solve(char[][] board) {
+        if (board == null || board.length <= 1 || board[0].length <= 1)
+            return;
+
+        /* 上下边缘 */
+        for (int i = 0; i < board[0].length; i++) {
+            Flood_fill(board, 0, i);
+            Flood_fill(board, board.length - 1, i);
+        }
+        /* 左右边缘 */
+        for (int i = 0; i < board.length; i++) {
+            Flood_fill(board, i, 0);
+            Flood_fill(board, i, board[0].length - 1);
+        }
+        for (int i = 0; i < board.length; i++) {
+            for (int j = 0; j < board[0].length; j++) {
+                if (board[i][j] == 'O')
+                    board[i][j] = 'X';
+                else if (board[i][j] == '#')
+                    board[i][j] = 'O';
+            }
+        }
+    }
+
+    private void Flood_fill(char[][] board, int i, int j) {
+        if (board[i][j] != 'O')
+            return;
+        board[i][j] = '#';
+        int code = i * board[0].length + j;
+        bfs(board, code);
+        return;
+    }
+
+    /* 图形学上的广度优先搜索 */
+    private void bfs(char[][] board, int code) {
+        Queue<Integer> queue = new LinkedList<Integer>();
+        queue.offer(code);
+        while (!queue.isEmpty()) {
+            code = queue.poll();
+            int row = code / board[0].length;
+            int col = code % board[0].length;
+            if (row > 0 && board[row - 1][col] == 'O') {
+                queue.offer((row - 1) * board[0].length + col);
+                board[row - 1][col] = '#';
+            }
+            if (row < board.length - 1 && board[row + 1][col] == 'O') {
+                queue.offer((row + 1) * board[0].length + col);
+                board[row + 1][col] = '#';
+            }
+            if (col > 0 && board[row][col - 1] == 'O') {
+                queue.offer(row * board[0].length + (col - 1));
+                board[row][col - 1] = '#';
+            }
+            if (col < board[0].length - 1 && board[row][col + 1] == 'O') {
+                queue.offer(row * board[0].length + (col + 1));
+                board[row][col + 1] = '#';
+            }
+        }
+    }
+}
