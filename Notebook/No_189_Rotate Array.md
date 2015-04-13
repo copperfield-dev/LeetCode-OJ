@@ -9,7 +9,7 @@
 > For example, with n = 7 and k = 3, the array [1,2,3,4,5,6,7] is rotated to [5,6,7,1,2,3,4].
 
 > **Note**:
-> Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
+> 注意k的大小，若k > n, 可以用k = k % n处理
 
 ## Solution
 
@@ -36,3 +36,6 @@
 	1、 逆序排列前n-k个元素
 	2、 逆序排列后k个元素
 	3、 将所有元素逆序排列
+
+**Time complexity**: O(n)
+**Space complexity**: O(1)
